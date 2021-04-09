@@ -1,0 +1,59 @@
+{
+  "name": "dominic.balass.one",
+  "version": "0.0.1",
+  "description": "Personal Website for Dominic Balassone",
+  "author": "Dominic Balassone <SydBal>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SydBal/dominic.balass.one.git"
+  },
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Dominic Balassone",
+      "email": "dominic.balassone@gmail.com"
+    }
+  ],
+  "main": "server/index.js",
+  "dependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "express": "^4.17.1",
+    "node-sass": "^4.13.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.2.0",
+    "sass-loader": "^8.0.0",
+    "standard": "^14.3.1",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-merge": "^4.2.2"
+  },
+  "scripts": {
+    "start": "node scripts/start",
+    "dev": "node scripts/dev",
+    "build": "node scripts/build"
+  },
+  "bugs": {
+    "url": "https://github.com/SydBal/dominic.balass.one/issues"
+  },
+  "homepage": "https://dominic.balass.one/",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard-jsx": "^8.1.0",
+    "eslint-config-standard-preact": "^1.1.6",
+    "eslint-config-standard-react": "^9.2.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "webpack-hot-middleware": "^2.25.0"
+  }
+}

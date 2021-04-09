@@ -1,0 +1,8 @@
+node_modules
+package-lock.json
+.DS_Store
+.idea
+.vscode
+
+public/app.js*
+public/styles.css*
