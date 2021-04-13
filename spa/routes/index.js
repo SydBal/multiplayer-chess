@@ -1,33 +1,70 @@
-/**
- * The Routing Component for the Single Page App
- */
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import JoinRoom from '@Components/GameSetup/JoinRoom/joinroom.js'
+import { ColorContext } from '@Context/ColorContext'
+import Onboard from '@Components/GameSetup/CreateGame/onboard.js'
+import JoinGame from '@Components/GameSetup/JoinGame/joingame.js'
+import ChessGame from '@Components/Chess/ui/chessgame'
 
-import Header from 'Components/Header'
-import Footer from 'Components/Footer'
+/*
+ *  Frontend flow:
+ *
+ * 1. user first opens this app in the browser.
+ * 2. a screen appears asking the user to send their friend their game URL to start the game.
+ * 3. the user sends their friend their game URL
+ * 4. the user clicks the 'start' button and waits for the other player to join.
+ * 5. As soon as the other player joins, the game starts.
+ *
+ *
+ * Other player flow:
+ * 1. user gets the link sent by their friend
+ * 2. user clicks on the link and it redirects to their game. If the 'host' has not yet
+ *    clicked the 'start' button yet, the user will wait for when the host clicks the start button.
+ *    If the host decides to leave before they click on the "start" button, the user will be notified
+ *    that the host has ended the session.
+ * 3. Once the host clicks the start button or the start button was already clicked on
+ *    before, that's when the game starts.
+ * Onboarding screen =====> Game start.
+ *
+ * Every time a user opens our site from the '/' path, a new game instance is automatically created
+ * on the back-end. We should generate the uuid on the frontend, send the request with the uuid
+ * as a part of the body of the request. If any player leaves, then the other player wins automatically.
+ *
+ */
 
-import Home from './_root'
-import About from './About'
-import Topics from './Topics'
+function Routes () {
+  const [didRedirect, setDidRedirect] = React.useState(false)
 
-export default props =>
-  <Router>
-    <Header />
-    <Switch>
-      <Route path='/about'>
-        <About />
-      </Route>
-      <Route path='/topics'>
-        <Topics />
-      </Route>
-      <Route path='/'>
-        <Home />
-      </Route>
-    </Switch>
-    <Footer />
-  </Router>
+  const playerDidRedirect = React.useCallback(() => {
+    setDidRedirect(true)
+  }, [])
+
+  const playerDidNotRedirect = React.useCallback(() => {
+    setDidRedirect(false)
+  }, [])
+
+  const [userName, setUserName] = React.useState('')
+
+  return (
+    <ColorContext.Provider value={{ didRedirect: didRedirect, playerDidRedirect: playerDidRedirect, playerDidNotRedirect: playerDidNotRedirect }}>
+      <Router>
+        <Switch>
+          <Route path='/' exact>
+            <Onboard setUserName={setUserName} />
+          </Route>
+          <Route path='/game/:gameid' exact>
+            {didRedirect
+              ? (<>
+                  <JoinGame userName={userName} isCreator />
+                  <ChessGame myUserName={userName} />
+                </>)
+              : <JoinRoom />}
+          </Route>
+          <Redirect to='/' />
+        </Switch>
+      </Router>
+    </ColorContext.Provider>
+  )
+}
+
+export default Routes

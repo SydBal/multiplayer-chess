@@ -5,9 +5,11 @@ module.exports = {
   context: path.resolve(__dirname, '../'),
   resolve: {
     alias: {
-      SPA: path.resolve(__dirname, '../spa'),
-      Components: path.resolve(__dirname, '../spa/components'),
-      Routes: path.resolve(__dirname, '../spa/routes')
+      '@SPA': path.resolve(__dirname, '../spa'),
+      '@Components': path.resolve(__dirname, '../spa/components'),
+      '@Routes': path.resolve(__dirname, '../spa/routes'),
+      '@Connections': path.resolve(__dirname, '../spa/connections'),
+      '@Context': path.resolve(__dirname, '../spa/context')
     }
   },
   entry: {
@@ -24,6 +26,10 @@ module.exports = {
             presets: [
               '@babel/env',
               '@babel/react'
+            ],
+            plugins: [
+              '@babel/plugin-transform-react-jsx',
+              '@babel/plugin-proposal-class-properties'
             ]
           }
         }
@@ -41,7 +47,7 @@ module.exports = {
         use: 'json-loader'
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|mp3)$/,
         use: [
           {
             loader: 'file-loader',

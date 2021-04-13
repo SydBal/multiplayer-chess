@@ -1,3 +1,21 @@
 {
-  "extends": ["standard", "standard-react"]
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "plugins": [
+        "@babel/plugin-transform-react-jsx",
+        "@babel/plugin-proposal-class-properties"
+      ]
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "standard",
+    "standard-react"
+  ],
+  "rules": {
+    "react/prop-types": 0
+  }
 }

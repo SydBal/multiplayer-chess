@@ -1,5 +1,7 @@
 const path = require('path')
 const express = require('express')
+const socketio = require('socket.io')
+const gameLogic = require('./game-logic')
 
 class Server {
   constructor ({
@@ -10,15 +12,34 @@ class Server {
     this.app = express()
   }
 
+  respondWithSPA (res) {
+    res.sendFile(path.join(__dirname, '../public/index.html'))
+  }
+
   exposeStaticAssets () {
     if (this.initStaticAssets) {
       throw new Error('Assets Already Exposed')
     }
-    this.app.use(express.static(path.join(__dirname, '../public')))
-    this.app.use('/', (req, res) => {
-      console.log('index.html requested!')
-      res.sendFile(path.join(__dirname, '../public/index.html'))
+
+    this.app.use('/', express.static(path.join(__dirname, '../public'), { index: false }))
+    this.app.use('/game/', express.static(path.join(__dirname, '../public')))
+
+    this.app.get('/game/:gameId', (req, res) => {
+      console.log('Game page requested')
+      this.respondWithSPA(res)
     })
+
+    this.app.get(['/:folder', '/:folder*/:file'], (req, res) => {
+      console.log('Unknown route requested, redirect to root')
+      res.redirect('/')
+    })
+
+    // Controlling the root route, thanks to { index: false } option in static files setup
+    this.app.use('/', (req, res) => {
+      console.log('Root site requested')
+      this.respondWithSPA(res)
+    })
+
     this.initStaticAssets = true
   }
 
@@ -28,11 +49,17 @@ class Server {
         reject(new Error('Assets Already Exposed'))
       }
       try {
-        this.app.listen(this.port, () => {
+        this.server = this.app.listen(this.port, () => {
           console.log(`listening on localhost:${this.port}`)
           this.initHttp = true
-          resolve()
         })
+
+        this.io = socketio(this.server)
+
+        this.io.on('connection', client => {
+          gameLogic.initializeGame(this.io, client)
+        })
+        resolve()
       } catch (e) {
         reject(new Error('Server: Http Listen Failed!'))
       }
@@ -42,6 +69,7 @@ class Server {
   start () {
     console.log('Starting server...')
     this.exposeStaticAssets()
+
     return this.listen()
   }
 }
