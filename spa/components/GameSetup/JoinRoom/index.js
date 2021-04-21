@@ -1,5 +1,5 @@
 import React from 'react'
-import JoinGame from '@Components/GameSetup/JoinGame/joingame'
+import JoinGame from '@Components/GameSetup/JoinGame'
 import ChessGame from '@Components/Chess/ui/chessgame'
 
 /**

@@ -1,9 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
-import JoinRoom from '@Components/GameSetup/JoinRoom/joinroom.js'
 import { ColorContext } from '@Context/ColorContext'
-import Onboard from '@Components/GameSetup/CreateGame/onboard.js'
-import JoinGame from '@Components/GameSetup/JoinGame/joingame.js'
+import CreateGame from '@Components/GameSetup/CreateGame'
+import JoinGame from '@Components/GameSetup/JoinGame'
+import JoinRoom from '@Components/GameSetup/JoinRoom'
 import ChessGame from '@Components/Chess/ui/chessgame'
 
 /*
@@ -50,7 +50,7 @@ function Routes () {
       <Router>
         <Switch>
           <Route path='/' exact>
-            <Onboard setUserName={setUserName} />
+            <CreateGame setUserName={setUserName} />
           </Route>
           <Route path='/game/:gameid' exact>
             {didRedirect
