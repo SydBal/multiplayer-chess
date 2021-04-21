@@ -4,5 +4,5 @@ package-lock.json
 .idea
 .vscode
 
-public/app.js*
-public/styles.css*
+public
+!public/index.html
